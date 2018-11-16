@@ -15,7 +15,7 @@ class Results extends Component {
 render() {
   return (
     <Grid>
-     <h2>`{this.props.path} List` </h2>
+     <h2>{this.props.path} List </h2>
         <ListGroup>
           {this.props.mapItems(this.props.datapack)}
         </ListGroup>

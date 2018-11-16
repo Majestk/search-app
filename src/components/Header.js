@@ -2,11 +2,11 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 const Header = (props) => (
-      <nav className="navbar navbar-dark bg-secondary">
+      <nav className="navbar navbar-dark bg-dark">
         <ul>
-          <button className="btn btn-outline-light"><NavLink exact to="/">Search</NavLink></button>
-          <button className="btn btn-outline-light"><NavLink to="/results">Results</NavLink><span className="badge badge-light">{props.data1}</span></button>
-          <button className="btn btn-outline-light"><NavLink to="/saved">Saved</NavLink><span className="badge badge-light">{props.data2}</span></button>
+          <NavLink exact to="/"><button className="btn btn-outline-light">Search</button></NavLink>
+          <NavLink exact to="/results"><button className="btn btn-outline-light">Results<span className="badge bage-info">{props.data1}</span></button></NavLink>
+          <NavLink exact to="/saved"><button className="btn btn-outline-light">Saved<span className="badge bage-info">{props.data2}</span></button></NavLink>
         </ul>
       </nav>
 
