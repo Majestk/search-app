@@ -5,6 +5,7 @@ import Results from './components/Results';
 import Header from './components/Header'
 import {
   BrowserRouter,
+  Redirect,
   Route,
   Switch
 } from 'react-router-dom';
@@ -45,6 +46,7 @@ class App extends Component {
 
 
   }
+  // create a function to combine api data bits that share authorweb key:value pairs to fix issue of having mulitple "duplicate" authors
 
   render() {
     return (
