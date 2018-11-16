@@ -22,7 +22,8 @@ class App extends Component {
     super();
     this.state = {
       results:[{authorweb: 'There is nothing to show yet, try searching for a book or author!'}],
-      savedSearches:[]
+      savedSearches:[],
+      query: ""
     };
     this.performSearch = this.performSearch.bind(this);
   }
@@ -31,7 +32,8 @@ class App extends Component {
       axios.get(`https://reststop.randomhouse.com/resources/works/?start=0&max=40&expandLevel=1&search=${query}`)
         .then(response => { if (Array.isArray(response.data.work)) {
             this.setState({
-              results: response.data.work
+              results: response.data.work,
+              query: query
             });
           } else {this.setState({results: [response.data.work]})}
         })
@@ -51,12 +53,10 @@ class App extends Component {
     );
   }
   saveSearch = (index, saved) => {
-      this.setState(prevState => ({
-        savedSearches: this.state.savedSearches.concat(saved[index])
-      //   // ...this.state.results.slice(0, index),
-      //   // ...this.state.results.slice(index + 1)
-      }));
-      console.log(index, saved)
+
+      this.setState({
+        savedSearches: [saved[index]]
+      });
     }
 
 

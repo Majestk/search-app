@@ -22,9 +22,9 @@ render() {
       <ListGroupItem >{this.props.datapack.authorweb}
         <ul>
           <li>{this.props.datapack.titleAuth}</li>
-          <li></li>
+          <li>{this.props.datapack.onsaledate}</li>
         </ul>
-      <button className="float-right btn btn-outline-dark" onClick={this.onClick} >Save
+      <button className=" btn btn-outline-dark" onClick={this.onClick} >Save
       </button>
     </ListGroupItem>
   </div>
