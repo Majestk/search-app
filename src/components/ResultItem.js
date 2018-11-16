@@ -1,9 +1,30 @@
-import React from 'react';
+import React, {Component} from 'react';
 import {ListGroupItem} from 'react-bootstrap';
-import {NavLink} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 
-const ResultItem = props => (
-  <ListGroupItem className="justify-content-between">{props.data}<button className="btn btn-outline-light d-flex"><NavLink to="/more">More</NavLink></button></ListGroupItem>
-);
 
+class ResultItem extends Component {
+
+state = {
+  index: this.props.index
+}
+
+onClick = e => {
+  let saved = [this.props.datapack];
+  this.props.saveSearch(this.state.index, saved);
+}
+
+
+
+render() {
+  return (
+    <div className="d-flex-xl flex-row">
+      <ListGroupItem >{this.props.datapack.authorweb}
+      <button className="float-right btn btn-outline-dark" onClick={this.onClick} >Save
+      </button>
+    </ListGroupItem>
+  </div>
+ );
+}
+}
 export default ResultItem;

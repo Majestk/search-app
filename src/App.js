@@ -2,16 +2,15 @@ import React, { Component } from 'react';
 import { Grid, Jumbotron} from 'react-bootstrap';
 import SearchForm from './components/SearchForm';
 import Results from './components/Results';
-import Header from './components/Header'
+import Header from './components/Header';
+import ResultItem from './components/ResultItem'
 import {
   BrowserRouter,
-  Redirect,
   Route,
   Switch
 } from 'react-router-dom';
-// using fetch causes CORS errors when asking for JSON, yet axios bypasses this issue
+// using fetch causes CORS errors when asking for JSON, axios.get() bypasses this issue
 import axios from 'axios';
-
 
 
 
@@ -23,30 +22,43 @@ class App extends Component {
     super();
     this.state = {
       results:[{authorweb: 'There is nothing to show yet, try searching for a book or author!'}],
-      author:[]
+      savedSearches:[]
     };
     this.performSearch = this.performSearch.bind(this);
   }
-//fetch data from api
+//fetch data from api using search value in form
   performSearch(query, type) {
-    axios.get(`https://reststop.randomhouse.com/resources/works/?start=0&max=40&expandLevel=1&search=${query}`)
-      .then(response => {
-        this.setState({
-          results: response.data.work
+      axios.get(`https://reststop.randomhouse.com/resources/works/?start=0&max=40&expandLevel=1&search=${query}`)
+        .then(response => { if (Array.isArray(response.data.work)) {
+            this.setState({
+              results: response.data.work
+            });
+          } else {this.setState({results: [response.data.work]})}
+        })
+        .then(results =>  { if (this.state.results === undefined)
+          {this.setState(
+                  {results : [{authorweb: 'There is nothing to show yet, try searching for a book or author!'}]}
+            )}
+        })
+        .catch(error => {
+          console.log('Error fetching data', error);
         });
-      })
-      .then(results =>  { if (this.state.results == undefined)
-        {this.setState(
-                {results : [{authorweb: 'There is nothing to show yet, try searching for a book or author!'}]}
-              )}
-            })
-      .catch(error => {
-        console.log('Error fetching data', error);
-      });
-
-
   }
-  // create a function to combine api data bits that share authorweb key:value pairs to fix issue of having mulitple "duplicate" authors
+  // create a function to combine api data bits
+  mapResults(array) {
+    return (
+      array.map((data, index) => <ResultItem datapack={data} key={index} index={index} saveSearch={this.saveSearch} />)
+    );
+  }
+  saveSearch = (index, saved) => {
+      this.setState(prevState => ({
+        savedSearches: this.state.savedSearches.concat(saved[index])
+      //   // ...this.state.results.slice(0, index),
+      //   // ...this.state.results.slice(index + 1)
+      }));
+      console.log(index, saved)
+    }
+
 
   render() {
     return (
@@ -55,7 +67,7 @@ class App extends Component {
       <Route exact path="/" render= { () =>
 
           <div>
-            <Header />
+            <Header data1={this.state.results.length} data2={this.state.savedSearches.length} />
             <Jumbotron>
               <Grid>
                 <h1>Search App</h1>
@@ -67,8 +79,35 @@ class App extends Component {
           </div>
       } />
 
-            <Route path="/results" render={ () => <div><Header /> <Grid><Results data={this.state.results}/></Grid></div>}/>
-            <Route path="/more" render={ () => <h1>more coming</h1>} />
+            <Route path="/results" render={ () =>
+              <div>
+                <Header
+                    data1={this.state.results.length}
+                    data2={this.state.savedSearches.length} />
+                      <Grid>
+                        <Results
+                          path='Results'
+                          datapack={this.state.results}
+                          mapItems={this.mapResults}
+                          saveSearch={this.saveSearch} />
+                      </Grid>
+              </div>}/>
+
+            <Route path="/saved" render={ () =>
+                  <div>
+                    <Header
+                    data1={this.state.results.length}
+                    data2={this.state.savedSearches.length}/>
+                      <Grid>
+                        <Results
+                          path='Saved'
+                          datapack={this.state.savedSearches}
+                          mapItems={this.mapResults}
+                          removeSaved={this.removeSaved}
+                        />
+                      </Grid>
+                  </div>} />
+
           </Switch>
       </BrowserRouter>
     );
