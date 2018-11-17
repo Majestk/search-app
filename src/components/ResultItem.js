@@ -11,25 +11,43 @@ state = {
 
 onClick = e => {
   let saved = [this.props.datapack];
-  this.props.saveSearch(saved);
-  saved = ''
+  if (this.props.removeSaved == 'false') {
+    this.props.saveSearch(saved);
+  } else {
+    this.props.removeSaved(this.state.index);
+  }
 }
 
 
-
 render() {
-  return (
-    <div className="d-flex-xl flex-row">
-      <ListGroupItem >{this.props.datapack.authorweb}
-        <ul>
-          <li>{this.props.datapack.titleAuth}</li>
-          <li>{this.props.datapack.onsaledate}</li>
-        </ul>
-      <button className=" btn btn-outline-dark" onClick={this.onClick} >Save
-      </button>
-    </ListGroupItem>
-  </div>
- );
+  if (this.props.route == 'Results') {
+    return (
+      <div className="d-flex-xl flex-row">
+        <ListGroupItem >{this.props.datapack.authorweb}
+          <ul>
+            <li>{this.props.datapack.titleAuth}</li>
+            <li>{this.props.datapack.onsaledate}</li>
+          </ul>
+        <button className=" btn btn-outline-dark" onClick={this.onClick} > Save
+        </button>
+      </ListGroupItem>
+    </div>
+   );
+ } else {
+   return (
+     <div className="d-flex-xl flex-row">
+       <ListGroupItem >{this.props.datapack.authorweb}
+         <ul>
+           <li>{this.props.datapack.titleAuth}</li>
+           <li>{this.props.datapack.onsaledate}</li>
+         </ul>
+       <button className=" btn btn-outline-dark" onClick={this.onClick} > Remove
+       </button>
+     </ListGroupItem>
+   </div>
+  );
+
+ }
 }
 }
 export default ResultItem;

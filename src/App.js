@@ -47,10 +47,11 @@ class App extends Component {
         });
   }
   // create a function to combine api data bits
-  mapResults(array) {
-    return (
-      array.map((data, index) => <ResultItem datapack={data} key={index} saveSearch={this.saveSearch} />)
-    );
+  mapResults(array, route) {
+      return (
+        array.map((data, index) => <ResultItem datapack={data} key={index} index={index} saveSearch={this.saveSearch} removeSaved={this.removeSaved} route={route}/>)
+      );
+
   }
   saveSearch = (saved) => {
       let current = this.state.savedSearches;
@@ -59,7 +60,15 @@ class App extends Component {
         savedSearches: current
       });
     }
+    removeSaved = (index) => {
+        this.setState({
+          savedSearches: [
+            ...this.state.savedSearches.slice(0, index),
+            ...this.state.savedSearches.slice(index + 1)
+          ]
+        });
 
+    }
 
   render() {
     return (
@@ -87,10 +96,11 @@ class App extends Component {
                     data2={this.state.savedSearches.length} />
                       <Grid>
                         <Results
-                          path='Results'
+                          route='Results'
                           datapack={this.state.results}
                           mapItems={this.mapResults}
-                          saveSearch={this.saveSearch} />
+                          saveSearch={this.saveSearch}
+                          removeSaved='false' />
                       </Grid>
               </div>}/>
 
@@ -101,7 +111,7 @@ class App extends Component {
                     data2={this.state.savedSearches.length}/>
                       <Grid>
                         <Results
-                          path='Saved'
+                          route='Saved'
                           datapack={this.state.savedSearches}
                           mapItems={this.mapResults}
                           removeSaved={this.removeSaved}
