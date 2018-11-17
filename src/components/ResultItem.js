@@ -11,7 +11,8 @@ state = {
 
 onClick = e => {
   let saved = [this.props.datapack];
-  this.props.saveSearch(this.state.index, saved);
+  this.props.saveSearch(saved);
+  saved = ''
 }
 
 

@@ -49,13 +49,14 @@ class App extends Component {
   // create a function to combine api data bits
   mapResults(array) {
     return (
-      array.map((data, index) => <ResultItem datapack={data} key={index} index={index} saveSearch={this.saveSearch} />)
+      array.map((data, index) => <ResultItem datapack={data} key={index} saveSearch={this.saveSearch} />)
     );
   }
-  saveSearch = (index, saved) => {
-
+  saveSearch = (saved) => {
+      let current = this.state.savedSearches;
+      current.push(saved[0]);
       this.setState({
-        savedSearches: [saved[index]]
+        savedSearches: current
       });
     }
 
