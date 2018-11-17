@@ -37,7 +37,7 @@ class App extends Component {
             });
           } else {this.setState({results: [response.data.work]})}
         })
-        .then(results =>  { if (this.state.results === undefined)
+        .then(results =>  { if (this.state.results[0] === undefined || null)
           {this.setState(
                   {results : [{authorweb: 'There is nothing to show yet, try searching for a book or author!'}]}
             )}
@@ -46,10 +46,16 @@ class App extends Component {
           console.log('Error fetching data', error);
         });
   }
-  // create a function to combine api data bits
+  // creates a ResultItem for each item
   mapResults(array, route) {
       return (
-        array.map((data, index) => <ResultItem datapack={data} key={index} index={index} saveSearch={this.saveSearch} removeSaved={this.removeSaved} route={route}/>)
+        array.map((data, index) => <ResultItem
+                                      datapack={data}
+                                      key={index}
+                                      index={index}
+                                      saveSearch={this.saveSearch}
+                                      removeSaved={this.removeSaved}
+                                      route={route} />)
       );
 
   }
