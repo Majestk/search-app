@@ -3,7 +3,6 @@ import {
   Grid,
   ListGroup,
 } from 'react-bootstrap';
-import ResultItem from './ResultItem';
 
 class Results extends Component {
 

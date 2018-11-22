@@ -1,6 +1,5 @@
 import React, {Component} from 'react';
 import {ListGroupItem} from 'react-bootstrap';
-import {Link} from 'react-router-dom';
 
 
 class ResultItem extends Component {
@@ -11,7 +10,7 @@ state = {
 
 onClick = e => {
   let saved = [this.props.datapack];
-  if (this.props.removeSaved == 'false') {
+  if (this.props.removeSaved === 'false') {
     this.props.saveSearch(saved);
   } else {
     this.props.removeSaved(this.state.index);
@@ -20,7 +19,7 @@ onClick = e => {
 
 
 render() {
-  if (this.props.route == 'Results') {
+  if (this.props.route === 'Results') {
     return (
       <div className="d-flex-xl flex-row">
         <ListGroupItem >{this.props.datapack.authorweb}
